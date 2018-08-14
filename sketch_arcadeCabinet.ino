@@ -26,13 +26,9 @@
 */
 
 //find more keycodes here: http://keycode.info/
+//ToDo: find out ASCII key code for Player 1 and Player 2 Start button
 int pageUpASCII = 33;
 int pageDownASCII = 34;
-
-bool isButton1Pressed;
-bool isButton2Pressed;
-bool isButton1Held;
-bool isButton2Held;
 
 bool isKeyboardButton1Released;
 bool isKeyboardButton2Released;
@@ -45,8 +41,8 @@ bool isPlayer2StartLEDLit;
 // Construct the arcade buttons
 ArcadeButton player1Start(1, "Player 1 Start", 2);
 ArcadeButton player2Start(2, "Player 2 Start", 3);
-ArcadeButton player1Coin(3, "Player 1 Coin", 4);
-ArcadeButton player2Coin(4, "Player 2 Coin", 5);
+ArcadeButton player1Coin(3, "Player 1 Coin", 4, pageUpASCII);
+ArcadeButton player2Coin(4, "Player 2 Coin", 5, pageDownASCII);
 
 /*
   Developer's Note: The Arduino Uno defaults to using a 16Mhz
@@ -62,13 +58,8 @@ int skipLED      = skipLEDDelay;
 
 void setup() {
   Serial.begin(9600); // open the serial port at 9600 bps: //https://www.arduino.cc/reference/en/language/functions/communication/serial/print/
-  //Keyboard.begin();
-   
-  isButton1Pressed = false;
-  isButton2Pressed = false;
-  isButton1Held    = false;
-  isButton2Held    = false;
 
+  //Keyboard.begin();
   isKeyboardButton1Released = true;
   isKeyboardButton2Released = true;
 
