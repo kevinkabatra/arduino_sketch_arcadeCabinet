@@ -1,4 +1,5 @@
 #include <Keyboard.h>
+#include <ArcadeButton.h>
 
 /*
   ToDo: create a class that will serve as a button object.
@@ -41,6 +42,12 @@ bool isPlayer1StartLEDLit;
 bool isPlayer2CoinLEDLit;
 bool isPlayer2StartLEDLit;
 
+// Construct the arcade buttons
+ArcadeButton player1Start(1, "Player 1 Start", 2);
+ArcadeButton player2Start(2, "Player 2 Start", 3);
+ArcadeButton player1Coin(3, "Player 1 Coin", 4);
+ArcadeButton player2Coin(4, "Player 2 Coin", 5);
+
 /*
   Developer's Note: The Arduino Uno defaults to using a 16Mhz
   crystal. This means that the microcontroller can execute up
@@ -56,7 +63,7 @@ int skipLED      = skipLEDDelay;
 void setup() {
   Serial.begin(9600); // open the serial port at 9600 bps: //https://www.arduino.cc/reference/en/language/functions/communication/serial/print/
   //Keyboard.begin();
-  
+   
   isButton1Pressed = false;
   isButton2Pressed = false;
   isButton1Held    = false;
@@ -70,13 +77,13 @@ void setup() {
   isPlayer2CoinLEDLit  = true;
   isPlayer2StartLEDLit = false;
 
-  #define inputPinsLength 2
-  int inputPins[inputPinsLength]  = { 2, 3 };  
-  setInputPins(inputPins, inputPinsLength, true);  
+  //#define inputPinsLength 2
+  //int inputPins[inputPinsLength]  = { 2, 3 };  
+  //setInputPins(inputPins, inputPinsLength, true);  
   
-  #define outPinsLength 4
-  int outputPins[outPinsLength] = { 4, 5, 6, 7 };  
-  setInputPins(outputPins, outPinsLength, false);  
+  //#define outPinsLength 4
+  //int outputPins[outPinsLength] = { 4, 5, 6, 7 };  
+  //setInputPins(outputPins, outPinsLength, false);  
 }
 
 void loop() {
@@ -84,8 +91,8 @@ void loop() {
   printButtonPress();
   //sendToKeyboard();
   
-  setLEDState();
-  displayLEDState();
+  //setLEDState();
+  //displayLEDState();
 }
 
 void displayLEDState() {
@@ -131,43 +138,21 @@ void setLEDState() {
   In a case where the button was not being held we will immediately send the keyboard.Release()
 */
 void readInputPins() {  
-  //Check if the buttons are pressed
-  if(digitalRead(2) != 0) {
-    //Was the button held since the last loop?
-    if(isButton1Pressed || isButton1Held)
-    {
-      isButton1Held = true;
-      isButton1Pressed = false;
-    }    
-    else {
-      isButton1Pressed = true;  
-    }
-  }
-  else {
-    isButton1Pressed = false;
-    isButton1Held    = false;
-  }
+  player1Coin.SetButtonStatePressed();
+  player1Start.SetButtonStatePressed();
   
-  if(digitalRead(3) != 0) {
-    //Was the button held since the last loop?
-    if(isButton2Pressed || isButton2Held)
-    {
-      isButton2Held = true;
-      isButton2Pressed = false;
-    }    
-    else {
-      isButton2Pressed = true;  
-    }
-  }
-  else {
-    isButton2Pressed = false;
-    isButton2Held    = false;
-  }
-
+  player2Coin.SetButtonStatePressed();
+  player2Start.SetButtonStatePressed();
+  
   //Short-circuit the loop if no buttons are pressed
   //Arduino will start the loop again
-  if((!isButton1Pressed and !isButton2Pressed) || isButton1Held || isButton2Held) 
-  {
+  
+  if(
+    player1Coin.GetButtonState()  == ArcadeButton::States::UnPressed &&
+    player1Start.GetButtonState() == ArcadeButton::States::UnPressed &&
+    player2Coin.GetButtonState()  == ArcadeButton::States::UnPressed &&
+    player2Start.GetButtonState() == ArcadeButton::States::UnPressed
+  ) {
     return;
   }
   
@@ -176,23 +161,12 @@ void readInputPins() {
   //Check if the buttons are being held
   //Should not switch off button pressed yet, 
   //so that the pressing of the button can be processed
-  if(digitalRead(2)) {
-    if(isButton1Pressed) { isButton1Held = true;  }
-    else                 { isButton1Held = false; }
-  }
-  else
-  {
-    isButton1Held = false;
-  }
+
+  player1Coin.SetButtonStateHeld();
+  player1Start.SetButtonStateHeld();
   
-  if(digitalRead(3)) {
-    if(isButton2Pressed) { isButton2Held = true;  }
-    else                 { isButton2Held = false; }
-  }
-  else
-  {
-    isButton2Held = false;
-  }
+  player2Coin.SetButtonStateHeld();
+  player2Start.SetButtonStateHeld();
 }
 
 /*
@@ -257,9 +231,15 @@ void setInputPins(int pin[], int numberOfPins, bool isInput) {
   Uses Serial.println to inform the user which buttons are currently displayed.
 */
 void printButtonPress() {
-  if(isButton1Pressed == 1) { Serial.println("Button 1 is pressed."); }
-  if(isButton2Pressed == 1) { Serial.println("Button 2 is pressed."); }
+  if(player1Coin.GetButtonState() == ArcadeButton::States::Pressed  ) { Serial.println("Player 1 Coin is pressed."); }
+  if(player1Coin.GetButtonState() == ArcadeButton::States::Held     ) { Serial.println("Player 1 Coin is held."   ); }
   
-  if(isButton1Held == 1) { Serial.println("Button 1 is held."); }
-  if(isButton2Held == 1) { Serial.println("Button 2 is held."); }
+  if(player1Start.GetButtonState() == ArcadeButton::States::Pressed  ) { Serial.println("Player 1 Start is pressed."); }
+  if(player1Start.GetButtonState() == ArcadeButton::States::Held     ) { Serial.println("Player 1 Start is held."   ); }
+
+  if(player2Coin.GetButtonState() == ArcadeButton::States::Pressed  ) { Serial.println("Player 2 Coin is pressed."); }
+  if(player2Coin.GetButtonState() == ArcadeButton::States::Held     ) { Serial.println("Player 2 Coin is held."   ); }
+  
+  if(player2Start.GetButtonState() == ArcadeButton::States::Pressed  ) { Serial.println("Player 2 Start is pressed."); }
+  if(player2Start.GetButtonState() == ArcadeButton::States::Held     ) { Serial.println("Player 2 Start is held."   ); }
 }
