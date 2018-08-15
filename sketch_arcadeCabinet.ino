@@ -1,5 +1,5 @@
-#include <Keyboard.h>
 #include <ArcadeButton.h>
+#include <LED.h>
 
 /*
   ToDo: create a class that will serve as a button object.
@@ -25,24 +25,18 @@
     to then return to ButtonNotPressed
 */
 
-//find more keycodes here: http://keycode.info/
-//ToDo: find out ASCII key code for Player 1 and Player 2 Start button
-int pageUpASCII = 33;
-int pageDownASCII = 34;
+
 
 bool isKeyboardButton1Released;
 bool isKeyboardButton2Released;
 
-bool isPlayer1CoinLEDLit;
-bool isPlayer1StartLEDLit;
-bool isPlayer2CoinLEDLit;
-bool isPlayer2StartLEDLit;
-
 // Construct the arcade buttons
+//ToDO: add support to ArcadeButton to push in an LED object
+//ToDo: find out ASCII key code for Player 1 and Player 2 Start button, find more keycodes here: http://keycode.info/
 ArcadeButton player1Start(1, "Player 1 Start", 2);
 ArcadeButton player2Start(2, "Player 2 Start", 3);
-ArcadeButton player1Coin(3, "Player 1 Coin", 4, pageUpASCII);
-ArcadeButton player2Coin(4, "Player 2 Coin", 5, pageDownASCII);
+ArcadeButton player1Coin(3, "Player 1 Coin", 4, 33); // 33 is ASCII for PageUp Key Code
+ArcadeButton player2Coin(4, "Player 2 Coin", 5, 34); // 34 is ASCII for PageDown Key Code
 
 /*
   Developer's Note: The Arduino Uno defaults to using a 16Mhz
@@ -53,8 +47,17 @@ ArcadeButton player2Coin(4, "Player 2 Coin", 5, pageDownASCII);
   
   Reference: https://stackabuse.com/speeding-up-arduino/
 */
-int skipLEDDelay = 10000000; //10 million
-int skipLED      = skipLEDDelay;
+//ToDo: Add ability to determine the clock speed for the board,
+//this will enable this sketch to be operate as expected regardless
+//of its deployment
+const long skipLEDDelay = 3000L; //was 10 million when running on the UNO. Now 3000 for the Leonardo. Need to work out something that uses the actual clock speed.
+//int skipLED      = skipLEDDelay;
+
+// Construct the LEDs
+LED player1StartLED("Player 1 Start", 8 , false, skipLEDDelay);
+LED player2StartLED("Player 2 Start", 9 , false, skipLEDDelay);
+LED player1CoinLED("Player 1 Coin"  , 10, false, skipLEDDelay);
+LED player2CoinLED("Player 2 Coin"  , 11, false, skipLEDDelay);
 
 void setup() {
   Serial.begin(9600); // open the serial port at 9600 bps: //https://www.arduino.cc/reference/en/language/functions/communication/serial/print/
@@ -63,56 +66,24 @@ void setup() {
   isKeyboardButton1Released = true;
   isKeyboardButton2Released = true;
 
-  isPlayer1CoinLEDLit  = true;
-  isPlayer1StartLEDLit = false;
-  isPlayer2CoinLEDLit  = true;
-  isPlayer2StartLEDLit = false;
-
-  //#define inputPinsLength 2
-  //int inputPins[inputPinsLength]  = { 2, 3 };  
-  //setInputPins(inputPins, inputPinsLength, true);  
-  
-  //#define outPinsLength 4
-  //int outputPins[outPinsLength] = { 4, 5, 6, 7 };  
-  //setInputPins(outputPins, outPinsLength, false);  
+  player1CoinLED.SetLEDOn();
+  player2CoinLED.SetLEDOn();
 }
 
 void loop() {
   readInputPins();
   printButtonPress();
   //sendToKeyboard();
-  
-  //setLEDState();
-  //displayLEDState();
-}
 
-void displayLEDState() {
-  //Serial.println((String)"is player 1 start LED lit? " + isPlayer1StartLEDLit);
-  //Serial.println((String)"skipLED: " + skipLED);
+  //Serial.println(skipLEDDelay);
+  //Serial.println(player1StartLED.GetLEDBlinkSpeed());
   
-  if(skipLED == skipLEDDelay) {
-    isPlayer1CoinLEDLit  ? digitalWrite(7, HIGH) : digitalWrite(7, LOW);
-    isPlayer1StartLEDLit ? digitalWrite(6, HIGH) : digitalWrite(6, LOW);
-    isPlayer2CoinLEDLit  ? digitalWrite(5, HIGH) : digitalWrite(5, LOW);
-    isPlayer2StartLEDLit ? digitalWrite(4, HIGH) : digitalWrite(4, LOW);        
+  if(player1StartLED.UpdateCyclesTilLEDBlink() == 0){
+   player1StartLED.ToggleLED(); 
   }
-  else if(skipLED == 0) {
-      skipLED = skipLEDDelay;
-      return;
-  }
-  
-  skipLED--;
-}
 
-void setLEDState() {
-  //ToDo: figure out a nicer LED strategy, for now just blink ON | OFF  
-  if(isPlayer1StartLEDLit) {
-    isPlayer1StartLEDLit = false;
-    isPlayer2StartLEDLit = false;
-  }
-  else {
-    isPlayer1StartLEDLit = true;
-    isPlayer2StartLEDLit = true;
+  if(player2StartLED.UpdateCyclesTilLEDBlink() == 0){
+   player2StartLED.ToggleLED(); 
   }
 }
 
