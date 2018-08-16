@@ -1,5 +1,6 @@
 #include <ArcadeButton.h>
 #include <LED.h>
+#include <Timer.h>
 
 /*
   ToDo: create a class that will serve as a button object.
@@ -25,8 +26,6 @@
     to then return to ButtonNotPressed
 */
 
-
-
 bool isKeyboardButton1Released;
 bool isKeyboardButton2Released;
 
@@ -50,7 +49,13 @@ ArcadeButton player2Coin(4, "Player 2 Coin", 5, 34); // 34 is ASCII for PageDown
 //ToDo: Add ability to determine the clock speed for the board,
 //this will enable this sketch to be operate as expected regardless
 //of its deployment
-const long skipLEDDelay = 3000L; //was 10 million when running on the UNO. Now 3000 for the Leonardo. Need to work out something that uses the actual clock speed.
+
+/*
+ * //was 10 million when running on the UNO. Now 3000 for the Leonardo. Need to work out something that uses the actual clock speed. It is now 30000 since I have removed some of the Serial.println code
+ * I think this shows that a cycle counter will need to be adjusted not just on the clock speed, but how
+ * long it takes the loop operation to cycle when compared to a second.
+ */
+const long skipLEDDelay = 30000L; 
 //int skipLED      = skipLEDDelay;
 
 // Construct the LEDs
@@ -59,9 +64,11 @@ LED player2StartLED("Player 2 Start", 9 , false, skipLEDDelay);
 LED player1CoinLED("Player 1 Coin"  , 10, false, skipLEDDelay);
 LED player2CoinLED("Player 2 Coin"  , 11, false, skipLEDDelay);
 
+Timer ledBlinkTimer(millis(), Timer::TimeUnit::Second, 1, true);
+
 void setup() {
   Serial.begin(9600); // open the serial port at 9600 bps: //https://www.arduino.cc/reference/en/language/functions/communication/serial/print/
-
+  
   //Keyboard.begin();
   isKeyboardButton1Released = true;
   isKeyboardButton2Released = true;
@@ -85,6 +92,10 @@ void loop() {
   if(player2StartLED.UpdateCyclesTilLEDBlink() == 0){
    player2StartLED.ToggleLED(); 
   }
+
+  Serial.print("Remaining time: ");
+  Serial.println(ledBlinkTimer.GetRemainingTime());
+  ledBlinkTimer.UpdateTimer();
 }
 
 /*
