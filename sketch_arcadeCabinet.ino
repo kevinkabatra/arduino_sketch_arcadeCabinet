@@ -59,6 +59,7 @@ const long skipLEDDelay = 30000L;
 //int skipLED      = skipLEDDelay;
 
 // Construct the LEDs
+//ToDo: Update the LED library to also use the Timer library, Timer will control the delay not the LED
 LED player1StartLED("Player 1 Start", 8 , false, skipLEDDelay);
 LED player2StartLED("Player 2 Start", 9 , false, skipLEDDelay);
 LED player1CoinLED("Player 1 Coin"  , 10, false, skipLEDDelay);
@@ -82,20 +83,16 @@ void loop() {
   printButtonPress();
   //sendToKeyboard();
 
-  //Serial.println(skipLEDDelay);
-  //Serial.println(player1StartLED.GetLEDBlinkSpeed());
+  //Serial.print("Remaining time: ");
+  //Serial.print(ledBlinkTimer.GetRemainingTime());
   
-  if(player1StartLED.UpdateCyclesTilLEDBlink() == 0){
-   player1StartLED.ToggleLED(); 
-  }
-
-  if(player2StartLED.UpdateCyclesTilLEDBlink() == 0){
-   player2StartLED.ToggleLED(); 
-  }
-
-  Serial.print("Remaining time: ");
-  Serial.println(ledBlinkTimer.GetRemainingTime());
   ledBlinkTimer.UpdateTimer();
+  if(ledBlinkTimer.isTimerExpired) {
+   player1StartLED.ToggleLED(); 
+   player2StartLED.ToggleLED();
+   ledBlinkTimer.ResetTimer();
+  }
+  
 }
 
 /*
