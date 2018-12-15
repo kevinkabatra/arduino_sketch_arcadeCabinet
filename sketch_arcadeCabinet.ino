@@ -11,19 +11,26 @@ LED leds[numberOfLEDs] = {
   LED("Player 2 Coin" , 11, true)  
 };
 
+//Setup One intterrupt, all four buttons will trigger this code
+//All four buttons will need to run throught a schmitt trigger and also run directly to the Arduino
+//Check each button for its current state
+
 //Define keyboard buttons, find more keycodes here: http://keycode.info/
 byte numberOneASCII   = 49;
 byte numberTwoASCII   = 50;
 byte numberThreeASCII = 51;
 byte numberFourASCII  = 52;
 
+//Set interrupt in
+byte interruptPin = 3;
+
 // Construct the arcade buttons
 const short numberOfArcadeButtons = 4;
 ArcadeButton arcadeButtons[numberOfArcadeButtons] = {
-  ArcadeButton("Player 1 Start", 2, numberOneASCII  ),
-  ArcadeButton("Player 2 Start", 3, numberTwoASCII  ),
-  ArcadeButton("Player 1 Coin" , 4, numberThreeASCII),
-  ArcadeButton("Player 2 Coin" , 5, numberFourASCII )
+  ArcadeButton("Player 1 Start", 7 , numberOneASCII  ),
+  ArcadeButton("Player 2 Start", 8 , numberTwoASCII  ),
+  ArcadeButton("Player 1 Coin" , 9 , numberThreeASCII),
+  ArcadeButton("Player 2 Coin" , 10, numberFourASCII )
 };
 
 /**
