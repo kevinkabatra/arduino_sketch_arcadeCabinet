@@ -1,38 +1,45 @@
-# Key Mapping for Arcade Controller
+# Physical button to keyboard mapping
+## Non-Player Buttons
+| Physical Input on Arcade | Virtual Input in Emulation Station | Keyboard Key |
+|:-:|:-:|:-:|
+| Pinball Button Left | ? | Key 3 |
+| Pinball Button Right | ? | Key 4 |
+| Save State Button | Save State | Key 1 |
+| Load State Button | Load State | Key 2 |
 
-## Default Keyboard Mapping
+## Player 1 Keyboard Layout
+| Physical Input on Arcade | Virtual Input in Emulation Station | Keyboard Key |
+|:-:|:-:|:-:|
+| Left Joystick Up | D-Pad Up | Key Up |
+| Left Joystick Down | D-Pad Down | Key Down |
+| Left Joystick Left | D-Pad Left | Key Left |
+| Left Joystick Right | D-Pad Right | Key Right |
+| Player 1 Start Button | Start | Key 1 |
+| Player 1 Coin Button | Select | Key 9 |
+| Player 1 Button 1 | A | Key Left Ctrl
+| Player 1 Button 2 | B | Key Left Alt |
+| Player 1 Button 3 | C | Key Space |
+| Player 1 Button 4 | Left Shoulder | Key 5 |
+| Player 1 Button 5 | X | Key Z |
+| Player 1 Button 6 | Y | Key X |
+| Player 1 Button 7 | Z | Key C |
+| Player 1 Button 8 | Right Shoulder | Key Left Shift | 
+| Player 1 Coin Button | Hotkey Enable | Key 9 |
 
-| Occurrence | Input | Keyboard Key | ASCII Key Code | 
-|:-:|:-:|:-:|:-:|
-| Arcade | Load | Digit 7| 55 |
-| * | Save | Digit 8 | 56 |
-| * | Pinball Left | Digit 3 | 51 |
-| * | Pinball Right | Digit 4 | 52 | 
-| Player 1 | Start | Digit 1 | 49 |
-| * | Coin In | Digit 9 | 57 |
-| * | Joystick Up | Arrow Up | 38 |
-| * | Joystick Down | Arrow Down | 40 |
-| * | Joystick Left | Arrow Left | 37 |
-| * | Joystick Right | Arrow Right | 39 |
-| * | Action Button 1 | Control Left | 17 |
-| * | Action Button 2 | Alt Left | 18 |
-| * | Action Button 3 | Space | 32 |
-| * | Action Button 4 | Shift Left | 16 |
-| * | Action Button 5 | Z | 90 | 
-| * | Action Button 6 | X | 88 |
-| * | Action Button 7 | C | 67 |
-| * | Action Button 8 | Digit 5 | 53 |
-| Player 2 | Start | Digit 2 | 50 |
-| * | Coin In | Digit 0 | 48 |
-| * | Joystick Up | R | 82 |
-| * | Joystick Down | F | 70 |
-| * | Joystick Left | D | 68 |
-| * | Joystick Right | G | 71 |
-| * | Action Button 1 | A | 65 |
-| * | Action Button 2 | S | 83 |
-| * | Action Button 3 | Q | 81 |
-| * | Action Button 4 | W | 87 |
-| * | Action Button 5 | E | 69 | 
-| * | Action Button 6 | Bracket Left | 219 |
-| * | Action Button 7 | Bracket Right | 221 |
-| * | Action Button 8 | Digit 6 | 54 |
+## Player 2 Keyboard Layout
+| Physical Input on Arcade | Virtual Input in Emulation Station | Keyboard Key |
+|:-:|:-:|:-:|
+| Right Joystick Up | D-Pad Up | Key R |
+| Right Joystick Down | D-Pad Down | Key F |
+| Right Joystick Left | D-Pad Left | Key D |
+| Right Joystick Right | D-Pad Right | Key G |
+| Player 2 Start Button | Start | Key 2 |
+| Player 2 Coin Button | Select | Key 4 |
+| Player 2 Button 1 | A | Key A |
+| Player 2 Button 2 | B | Key S |
+| Player 2 Button 3 | C | Key Q |
+| Player 2 Button 4 | Left Shoulder | Key W |
+| Player 2 Button 5 | X | Key E | 
+| Player 2 Button 6 | Y | Key Left Square Bracket |
+| Player 2 Button 7 | Z | Key Right Square Bracket |
+| Player 2 Button 8 | Right Shoulder | Key 6 |
