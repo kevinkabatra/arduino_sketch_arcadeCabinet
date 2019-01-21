@@ -15,18 +15,18 @@ LED leds[numberOfLEDs] = {
 };
 
 //Define keyboard buttons, find more keycodes here: http://keycode.info/
-byte numberOneASCII   = 49;
-byte numberTwoASCII   = 50;
-byte numberThreeASCII = 51;
-byte numberFourASCII  = 52;
+byte numberSevenAscii = 55;
+byte numberEightAscii = 56;
+byte numberNineAscii = 57;
+byte numberZeroAscii = 48;
 
 // Construct the arcade buttons
 const short numberOfArcadeButtons = 4;
 ArcadeButton arcadeButtons[numberOfArcadeButtons] = {
-  ArcadeButton("Player 1 Start", 4, numberOneASCII  ),
-  ArcadeButton("Player 2 Start", 5, numberTwoASCII  ),
-  ArcadeButton("Player 1 Coin" , 6, numberThreeASCII),
-  ArcadeButton("Player 2 Coin" , 7, numberFourASCII )
+  ArcadeButton("Player 1 Start", 4, numberSevenAscii),
+  ArcadeButton("Player 2 Start", 5, numberEightAscii),
+  ArcadeButton("Player 1 Coin" , 6, numberNineAscii),
+  ArcadeButton("Player 2 Coin" , 7, numberZeroAscii)
 };
 
 /**
